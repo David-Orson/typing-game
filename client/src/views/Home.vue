@@ -6,6 +6,9 @@ const test = ref("");
 const typed = ref("");
 const timeLeft = ref(15);
 const intervalId = ref();
+const accuracy = ref(100);
+const errors = ref(0);
+const spaceErrors = ref(0);
 
 const wordlist =
   "anything then the best world will defeat any bother and I have any great interest ground govern anytime major sensitive west time gripe nose";
@@ -32,6 +35,7 @@ const reset = () => {
   clearInterval(intervalId.value);
 
   timeLeft.value = 15;
+  accuracy.value = 100;
 
   const arr = wordlist.split(" ");
 
@@ -48,11 +52,37 @@ const reset = () => {
 
   intervalId.value = setInterval(() => {
     timeLeft.value -= 1;
-    wpm.value = ((typed.value.length / 5) * 60) / (15 - timeLeft.value);
+    wpm.value = Math.round(
+      ((typed.value.length / 5) * 60) / (15 - timeLeft.value)
+    );
 
     if (timeLeft.value === 0) {
       clearInterval(intervalId.value);
     }
+
+    errors.value = 0;
+    spaceErrors.value = 0;
+
+    typed.value.split(" ").forEach((word, i) => {
+      word.split("").forEach((c, j) => {
+        if (c != test.value.split(" ")[i][j]) {
+          errors.value++;
+        }
+      });
+
+      if (i !== typed.value.split(" ").length - 1) {
+        errors.value += test.value.split(" ")[i].length - word.length;
+        spaceErrors.value += test.value.split(" ")[i].length - word.length;
+      }
+    });
+
+    if (typed.value.length)
+      accuracy.value = Math.round(
+        100 -
+          (errors.value /
+            (typed.value.replace(" ", "").length + spaceErrors.value)) *
+            100
+      );
   }, 1000);
 };
 
@@ -63,7 +93,7 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto">
-    <div>{{ timeLeft }} {{ wpm }}</div>
+    <div>{{ timeLeft }} {{ wpm }} {{ accuracy }}</div>
     <div class="mx-16 text-4xl text-gray-700">{{ test }}</div>
     <div class="m-16 text-4xl flex justify-center flex-wrap">
       <div class="flex" v-for="(word, i) in typed.split(' ')">
@@ -79,6 +109,14 @@ onMounted(() => {
             "
             >{{ c }}</span
           >
+        </div>
+        <div
+          v-if="
+            typed.split(' ').length > i + 1 &&
+            word.length !== test.split(' ')[i].length
+          "
+        >
+          X
         </div>
         <div class="w-2"></div>
       </div>
