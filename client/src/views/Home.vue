@@ -12,7 +12,9 @@ const errors = ref(0);
 const spaceErrors = ref(0);
 
 const wordlist =
-  "anything then the best world will defeat any bother and I have any great interest ground govern anytime major sensitive west time gripe nose";
+  "anything then the best world will defeat any bother and I have any great interest ground govern anytime major sensitive west time gripe nose big elephant has always been able to upset the small one";
+
+const underscores = "____________________________";
 
 window.addEventListener("keydown", (e) => {
   let allKeys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -124,8 +126,13 @@ onMounted(() => {
             typed.split(' ').length > i + 1 &&
             word.length !== test.split(' ')[i].length
           "
+          class="text-red-500"
         >
-          X
+          {{
+            test.split(" ")[i].length - word.length > 0
+              ? underscores.slice(0, test.split(" ")[i].length - word.length)
+              : ""
+          }}
         </div>
         <div class="w-2"></div>
       </div>
