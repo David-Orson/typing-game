@@ -11,6 +11,8 @@ const accuracy = ref(100);
 const errors = ref(0);
 const spaceErrors = ref(0);
 
+const sessionPr = ref(0);
+
 const wordlist =
   "anything then the best world will defeat any bother and I have any great interest ground govern anytime major sensitive west time gripe nose big elephant has always been able to upset the small one";
 
@@ -61,6 +63,8 @@ const reset = () => {
     // endgame
     if (timeLeft.value === 0) {
       clearInterval(intervalId.value);
+      if (accuracy.value === 100 && wpm.value > sessionPr.value)
+        sessionPr.value = wpm.value;
     }
 
     // reset errors
@@ -102,7 +106,7 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto">
-    <div>{{ timeLeft }} {{ wpm }} {{ accuracy }}</div>
+    <div>{{ timeLeft }} {{ wpm }} {{ accuracy }} PR: {{ sessionPr }}</div>
 
     <div class="mx-16 text-4xl text-gray-700">{{ test }}</div>
 
