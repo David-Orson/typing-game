@@ -37,13 +37,21 @@ onMounted(() => {
   <div class="container mx-auto">
     <div class="mx-16 text-4xl text-gray-700">{{ test }}</div>
     <div class="m-16 text-4xl flex justify-center flex-wrap">
-      <div v-for="(c, i) in typed">
-        <span
-          class="w-1"
-          :class="test[i] == typed[i] ? 'text-gray-700' : 'text-red-500'"
-          >{{ c }}</span
-        >
-        <span v-if="c == ' '">{{ "_" }}</span>
+      <div class="flex" v-for="(word, i) in typed.split(' ')">
+        <div v-for="(c, j) in word.split('')">
+          <span
+            class="w-1"
+            :class="
+              test.split(' ')[i] &&
+              test.split(' ')[i][j] &&
+              test.split(' ')[i][j] == typed.split(' ')[i][j]
+                ? 'text-gray-700'
+                : 'text-red-500'
+            "
+            >{{ c }}</span
+          >
+        </div>
+        <div class="w-2"></div>
       </div>
     </div>
   </div>
