@@ -5,6 +5,7 @@ const wpm = ref();
 const test = ref("");
 const typed = ref("");
 const timeLeft = ref(15);
+const timeTotal = ref(15);
 const intervalId = ref();
 const accuracy = ref(100);
 const errors = ref(0);
@@ -22,26 +23,23 @@ window.addEventListener("keydown", (e) => {
 
   if (e.key === " ") typed.value += " ";
 
-  if (e.key == "Backspace") {
-    typed.value = typed.value.slice(0, -1);
-  }
+  if (e.key === "Backspace") typed.value = typed.value.slice(0, -1);
 
-  if (e.key == "Enter") {
-    reset();
-  }
+  if (e.key === "Enter") reset();
 });
 
 const reset = () => {
   clearInterval(intervalId.value);
 
+  // reset test values
   timeLeft.value = 15;
   accuracy.value = 100;
-
-  const arr = wordlist.split(" ");
-
   test.value = "";
   typed.value = "";
 
+  const arr = wordlist.split(" ");
+
+  // populate test string
   for (let i = 0; i < 35; i++) {
     if (i !== 0) {
       test.value += " ";
@@ -52,30 +50,39 @@ const reset = () => {
 
   intervalId.value = setInterval(() => {
     timeLeft.value -= 1;
+
+    // calc wpm
     wpm.value = Math.round(
-      ((typed.value.length / 5) * 60) / (15 - timeLeft.value)
+      ((typed.value.length / 5) * 60) / (timeTotal.value - timeLeft.value)
     );
 
+    // endgame
     if (timeLeft.value === 0) {
       clearInterval(intervalId.value);
     }
 
+    // reset errors
     errors.value = 0;
     spaceErrors.value = 0;
 
-    typed.value.split(" ").forEach((word, i) => {
+    const typedSplit = typed.value.split(" ");
+    const testSplit = test.value.split(" ");
+
+    // count errors
+    typedSplit.forEach((word, i) => {
       word.split("").forEach((c, j) => {
-        if (c != test.value.split(" ")[i][j]) {
+        if (c != testSplit[i][j]) {
           errors.value++;
         }
       });
 
-      if (i !== typed.value.split(" ").length - 1) {
-        errors.value += test.value.split(" ")[i].length - word.length;
-        spaceErrors.value += test.value.split(" ")[i].length - word.length;
+      if (i !== typedSplit.length - 1) {
+        errors.value += testSplit[i].length - word.length;
+        spaceErrors.value += testSplit[i].length - word.length;
       }
     });
 
+    // calculate accuracy
     if (typed.value.length)
       accuracy.value = Math.round(
         100 -
@@ -94,7 +101,9 @@ onMounted(() => {
 <template>
   <div class="container mx-auto">
     <div>{{ timeLeft }} {{ wpm }} {{ accuracy }}</div>
+
     <div class="mx-16 text-4xl text-gray-700">{{ test }}</div>
+
     <div class="m-16 text-4xl flex justify-center flex-wrap">
       <div class="flex" v-for="(word, i) in typed.split(' ')">
         <div v-for="(c, j) in word.split('')">
