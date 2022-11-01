@@ -6,11 +6,26 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import Button from "primevue/button";
 
+// models
+import { LoginCreds, SignupCreds } from "@/data/models";
+
+// services
+import { useServices } from "@/data/services";
+const { logIn, signUp } = useServices();
+
 // reactive
-const creds = ref<any>({});
+const loginCreds = ref<LoginCreds>({} as LoginCreds);
+const signupCreds = ref<SignupCreds>({} as SignupCreds);
+const confirmPass = ref("");
 
 // methods
-const logInCallback = async () => {};
+const logInCallback = async () => {
+  logIn(loginCreds.value);
+};
+
+const signUpCallback = async () => {
+  signUp(signupCreds.value);
+};
 </script>
 
 <template>
@@ -19,10 +34,14 @@ const logInCallback = async () => {};
       class="flex flex-col justify-evenly h-40"
       @submit.prevent="logInCallback"
     >
-      <InputText id="email-input" v-model="creds.email" placeholder="Email" />
+      <InputText
+        id="email-input"
+        v-model="loginCreds.email"
+        placeholder="Email"
+      />
       <Password
         :feedback="false"
-        v-model="creds.password"
+        v-model="loginCreds.password"
         placeholder="Password"
       />
       <Button class="mt-4" label="Log In" type="submit" />
@@ -30,18 +49,26 @@ const logInCallback = async () => {};
     <div class="w-16"></div>
     <form
       class="flex flex-col justify-evenly h-64"
-      @submit.prevent="logInCallback"
+      @submit.prevent="signUpCallback"
     >
       <InputText
         id="username-input"
-        v-model="creds.name"
+        v-model="signupCreds.username"
         placeholder="Username"
       />
-      <InputText id="email-input" v-model="creds.email" placeholder="Email" />
-      <Password :feedback="true" v-model="creds.pass" placeholder="Password" />
+      <InputText
+        id="email-input"
+        v-model="signupCreds.email"
+        placeholder="Email"
+      />
       <Password
         :feedback="true"
-        v-model="creds.pass2"
+        v-model="signupCreds.password"
+        placeholder="Password"
+      />
+      <Password
+        :feedback="true"
+        v-model="confirmPass"
         placeholder="Confirm Password"
       />
       <Button class="mt-4" label="Sign Up" type="submit" />
