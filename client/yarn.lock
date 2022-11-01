@@ -7287,10 +7287,10 @@
   "resolved" "https://registry.npmjs.org/primeicons/-/primeicons-6.0.1.tgz"
   "version" "6.0.1"
 
-"primevue@^3.18.0":
-  "integrity" "sha512-7E3BTQRlvdVMh8OXIKqDVHFvF6UrrKacd80drTwiTHgjO98NLWtpDthxByM2z2yooGURx8JJ7GeFoMj8kKrScg=="
-  "resolved" "https://registry.npmjs.org/primevue/-/primevue-3.18.0.tgz"
-  "version" "3.18.0"
+"primevue@^3.18.1":
+  "integrity" "sha512-5UYNooA6Qqx0iGaRxPUYLPamxRn6eQKMNU3wbqGyxWhoc944rMaOiT9mVQWhavPlKCgs7FY8SNhsDzqV4aRCxA=="
+  "resolved" "https://registry.npmjs.org/primevue/-/primevue-3.18.1.tgz"
+  "version" "3.18.1"
 
 "process-nextick-args@~2.0.0":
   "integrity" "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="

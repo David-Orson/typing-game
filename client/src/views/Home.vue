@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 
+// reactive
 const wpm = ref();
 const test = ref("");
 const typed = ref("");
@@ -18,6 +19,7 @@ const wordlist =
 
 const underscores = "____________________________";
 
+// watchers
 window.addEventListener("keydown", (e) => {
   let allKeys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -32,6 +34,7 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "Enter") reset();
 });
 
+// methods
 const reset = () => {
   clearInterval(intervalId.value);
 
@@ -99,6 +102,7 @@ const reset = () => {
   }, 1000);
 };
 
+// lifecycle
 onMounted(() => {
   reset();
 });
