@@ -12,7 +12,7 @@ export const useAuthService = () => {
   const apiUrl = "http://localhost:8085";
 
   const getToken = async (loginCreds: LoginCreds) => {
-    const res = await axios.post(`${apiUrl}/auth/login`, loginCreds);
+    const res = await axios.post(`${apiUrl}/auth/log-in`, loginCreds);
     return res.data;
   };
 
@@ -22,7 +22,7 @@ export const useAuthService = () => {
 
   const signUp = async (signupCreds: SignupCreds) => {
     const { data: account } = await axios.post(
-      `${apiUrl}/auth/signup`,
+      `${apiUrl}/auth/sign-up`,
       signupCreds
     );
     const token = await getToken(signupCreds);
