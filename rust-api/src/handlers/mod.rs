@@ -1,16 +1,9 @@
-use actix_cors::Cors;
-use actix_web::App;
-use actix_web::HttpServer;
+use actix_web::{post, web, HttpResponse, Responder};
 
 pub mod auth_handler;
 
-#[actix_web::main]
-pub async fn server() -> std::io::Result<()> {
-    let app = move || {
-        App::new()
-            .wrap(Cors::permissive())
-            .configure(auth_handler::auth_routes)
-    };
+use auth_handler::log_in;
 
-    HttpServer::new(app).bind(("127.0.0.1", 8085))?.run().await
+pub fn auth_routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(web::scope("/auth").service(log_in));
 }
