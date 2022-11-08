@@ -1,5 +1,7 @@
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
+pub mod account;
+pub mod auth;
 mod migration;
 
 pub async fn open() -> Pool<Postgres> {
