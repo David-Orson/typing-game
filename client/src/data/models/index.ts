@@ -1,2 +1,3 @@
-export type { LoginCreds, SignupCreds } from "./auth";
+export type { Account } from "./account";
+export type { LoginCreds, SignupCreds, Token } from "./auth";
 export type { AxiosRequest } from "./networking";

@@ -39,7 +39,7 @@ pub async fn sign_up(state: Data<AppState>, body: Json<AccountBody>) -> impl Res
     };
 
     match pgstore::account::create(account, &state).await {
-        Ok(res) => HttpResponse::Ok().body(res),
+        Ok(acc) => HttpResponse::Ok().json(acc),
         Err(err) => {
             HttpResponse::InternalServerError().json(String::from(String::from(err.to_string())))
         }

@@ -9,6 +9,8 @@ export interface SignupCreds {
   password: string;
 }
 
-export interface AuthState {
-  token: string;
+export interface Token {
+  hash: string;
+  accountId: number;
+  username: string;
 }

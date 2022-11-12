@@ -4,7 +4,7 @@ use std::io;
 
 use crate::{store::models::auth::Account, AppState};
 
-pub async fn create(account: Account, state: &Data<AppState>) -> Result<String, io::Error> {
+pub async fn create(account: Account, state: &Data<AppState>) -> Result<Account, io::Error> {
     let hashed_pass: String;
 
     match hash(account.password, 4) {
@@ -12,15 +12,15 @@ pub async fn create(account: Account, state: &Data<AppState>) -> Result<String, 
         Err(e) => return Err(io::Error::new(io::ErrorKind::InvalidInput, e)),
     };
 
-    match sqlx::query(
+    match sqlx::query_as::<_, Account>(
         "INSERT INTO account (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, password"
     ).bind(account.username)
         .bind(account.email)
         .bind(hashed_pass)
-        .execute(&state.db)
+        .fetch_one(&state.db)
         .await
     {
-        Ok(_) => return Ok(String::from("hi")),
+        Ok(data) => return Ok(data),
         Err(e) => return Err(io::Error::new(io::ErrorKind::InvalidInput, e))
     }
 }
