@@ -1,8 +1,16 @@
+<script setup lang="ts">
+import { useStore } from "@/store";
+const store = useStore();
+</script>
+
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link to="/login">Login</router-link>
+    <router-link v-if="!store.state.account" to="/login">Login</router-link>
+    <router-link v-if="store.state.account" to="/account">{{
+      store.getters.account.username
+    }}</router-link>
   </nav>
   <router-view />
 </template>
