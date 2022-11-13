@@ -1,0 +1,6 @@
+site_name: Typing Game Docs
+site_url: https://example.com/
+nav:
+  - Home: index.md
+  - About: about.md
+theme: windmill-dark
