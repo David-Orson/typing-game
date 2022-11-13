@@ -3,6 +3,7 @@ use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 pub mod account;
 pub mod auth;
 mod migration;
+pub mod test;
 
 pub async fn open() -> Pool<Postgres> {
     let database_url = std::env::var("DATABASE_URL")

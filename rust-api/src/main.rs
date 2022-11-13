@@ -1,6 +1,6 @@
 use actix_cors::Cors;
 use actix_web::HttpServer;
-use actix_web::{web::Data, App};
+use actix_web::{web, web::Data, App};
 use dotenv::dotenv;
 use sqlx::{Pool, Postgres};
 
@@ -22,7 +22,12 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(Data::new(AppState { db: pool.clone() }))
             .wrap(Cors::permissive())
-            .configure(handlers::auth_routes)
+            .service(
+                web::scope("/test").configure(handlers::test_routes),
+            )
+            .service(
+                web::scope("/auth").configure(handlers::auth_routes),
+            )
     };
 
     HttpServer::new(app).bind(("127.0.0.1", 8085))?.run().await

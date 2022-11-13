@@ -12,7 +12,11 @@ export const useTestService = () => {
 
   // methods
   const finishTest = async (test: string, typed: string) => {
-    await axios.post(`${apiUrl}/test`, { test, typed });
+    await axios.post(`${apiUrl}/test/finish`, {
+      test,
+      typed,
+      account: store.getters.account.id,
+    });
   };
 
   return {

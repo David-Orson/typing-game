@@ -1,6 +1,6 @@
 use sqlx::{query, Pool, Postgres};
 
-const MIGRATIONS: [&str; 2] = [
+const MIGRATIONS: [&str; 3] = [
     "--sql
     CREATE TABLE IF NOT EXISTS account (
         id serial,
@@ -21,6 +21,17 @@ const MIGRATIONS: [&str; 2] = [
 			PRIMARY KEY (id),
 			FOREIGN KEY (account_id) REFERENCES account(id)
 		);",
+    "--sql
+    CREATE TABLE IF NOT EXISTS test (
+        id serial,
+        account_id int NOT NULL,
+        test varchar(250) NOT NULL DEFAULT '',
+        typed char(250) NOT NULL,
+        create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        modify_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        FOREIGN KEY (account_id) REFERENCES account(id)
+    )",
 ];
 
 pub async fn up(pool: &Pool<Postgres>) {
