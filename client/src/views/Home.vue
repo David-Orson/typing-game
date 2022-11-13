@@ -1,5 +1,10 @@
 <script setup lang="ts">
+// npm
 import { ref, onMounted } from "vue";
+
+// services
+import { useServices } from "@/data/services";
+const { finishTest } = useServices();
 
 // reactive
 const isTestActive = ref(false);
@@ -60,6 +65,8 @@ const reset = () => {
 
       if (accuracy.value === 100 && wpm.value > sessionPr.value)
         sessionPr.value = wpm.value;
+
+      finishTest(test.value, typed.value);
     }
 
     // reset errors
