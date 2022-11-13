@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 
 // reactive
+const isTestActive = ref(false);
 const wpm = ref();
 const test = ref("");
 const typed = ref("");
@@ -21,6 +22,8 @@ const underscores = "____________________________";
 
 // watchers
 window.addEventListener("keydown", (e) => {
+  if (!isTestActive.value && timeLeft.value === 15) reset();
+
   let allKeys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   allKeys.split("").forEach((c) => {
@@ -31,29 +34,15 @@ window.addEventListener("keydown", (e) => {
 
   if (e.key === "Backspace") typed.value = typed.value.slice(0, -1);
 
-  if (e.key === "Enter") reset();
+  if (e.key === "Enter") {
+    newTest();
+    populateTestString();
+  }
 });
 
 // methods
 const reset = () => {
-  clearInterval(intervalId.value);
-
-  // reset test values
-  timeLeft.value = 15;
-  accuracy.value = 100;
-  test.value = "";
-  typed.value = "";
-
-  const arr = wordlist.split(" ");
-
-  // populate test string
-  for (let i = 0; i < 35; i++) {
-    if (i !== 0) {
-      test.value += " ";
-    }
-
-    test.value += arr[Math.floor(Math.random() * arr.length)];
-  }
+  isTestActive.value = true;
 
   intervalId.value = setInterval(() => {
     timeLeft.value -= 1;
@@ -65,7 +54,10 @@ const reset = () => {
 
     // endgame
     if (timeLeft.value === 0) {
+      isTestActive.value = false;
+
       clearInterval(intervalId.value);
+
       if (accuracy.value === 100 && wpm.value > sessionPr.value)
         sessionPr.value = wpm.value;
     }
@@ -102,9 +94,31 @@ const reset = () => {
   }, 1000);
 };
 
+const populateTestString = () => {
+  const arr = wordlist.split(" ");
+  for (let i = 0; i < 35; i++) {
+    if (i !== 0) {
+      test.value += " ";
+    }
+
+    test.value += arr[Math.floor(Math.random() * arr.length)];
+  }
+};
+
+const newTest = () => {
+  clearInterval(intervalId.value);
+  isTestActive.value = false;
+
+  // reset test values
+  timeLeft.value = 15;
+  accuracy.value = 100;
+  test.value = "";
+  typed.value = "";
+};
+
 // lifecycle
 onMounted(() => {
-  reset();
+  populateTestString();
 });
 </script>
 
