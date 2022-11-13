@@ -26,10 +26,6 @@ read footer
 
 case $opt in
 	0)
-	    echo "Add"
-        echo $subj
-        echo $body
-        echo $footer
         git commit -m ":heavy_plus_sign: $subj
         
         $body
@@ -41,7 +37,12 @@ case $opt in
 		echo "Bug"
 		;;
     2)
-        echo "Refactor"
+        git commit -m ":repeat: $subj
+        
+        $body
+
+        $footer
+        "
         ;;
     3)
         echo "Perform"

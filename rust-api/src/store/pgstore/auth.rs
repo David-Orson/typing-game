@@ -8,29 +8,47 @@ use crate::{
     AppState,
 };
 
-pub async fn log_in(account: Account, state: &Data<AppState>) -> Result<Token, io::Error> {
+pub async fn log_in(
+    account: Account,
+    state: &Data<AppState>,
+) -> Result<Token, io::Error> {
     let fetched_acc: Account;
 
-    match query_as::<_, Account>("SELECT * FROM account WHERE email = $1")
-        .bind(account.email.to_string())
-        .fetch_one(&state.db)
-        .await
+    match query_as::<_, Account>(
+        "SELECT * FROM account WHERE email = $1",
+    )
+    .bind(account.email.to_string())
+    .fetch_one(&state.db)
+    .await
     {
         Ok(data) => fetched_acc = data,
-        Err(e) => return Err(io::Error::new(io::ErrorKind::InvalidInput, e)),
+        Err(e) => {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                e,
+            ))
+        }
     }
 
     match verify(account.password, &fetched_acc.password) {
         Ok(_) => (),
-        Err(err) => println!("{:?} passwords do not match", err),
+        Err(err) => {
+            println!("{:?} passwords do not match", err)
+        }
     }
 
-    let random_bytes: Vec<u8> = (0..72).map(|_| rand::random::<u8>()).collect();
+    let random_bytes: Vec<u8> =
+        (0..72).map(|_| rand::random::<u8>()).collect();
     let token_hash: String;
 
     match hash(random_bytes, 4) {
         Ok(result) => token_hash = result,
-        Err(e) => return Err(io::Error::new(io::ErrorKind::InvalidInput, e)),
+        Err(e) => {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                e,
+            ))
+        }
     };
 
     let token_clone = token_hash.clone();
@@ -55,7 +73,12 @@ pub async fn log_in(account: Account, state: &Data<AppState>) -> Result<Token, i
     .await
     {
         Ok(_) => (),
-        Err(e) => return Err(io::Error::new(io::ErrorKind::InvalidInput, e)),
+        Err(e) => {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                e,
+            ))
+        }
     }
 
     let token = Token {
