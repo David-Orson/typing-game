@@ -3,6 +3,7 @@ import { useAxios } from "@/hooks/axiosHook";
 import { useStore } from "@/store";
 
 // models
+import { Test } from "@/data/models";
 
 export const useTestService = () => {
   // hooks
@@ -11,6 +12,11 @@ export const useTestService = () => {
   const axios = useAxios();
 
   // methods
+  const getTests = async (accountId: number): Promise<Test[]> => {
+    const res = await axios.get(`${apiUrl}/test/${accountId}`);
+    return res.data;
+  };
+
   const finishTest = async (test: string, typed: string) => {
     await axios.post(`${apiUrl}/test/finish`, {
       test,
@@ -21,5 +27,6 @@ export const useTestService = () => {
 
   return {
     finishTest,
+    getTests,
   };
 };
