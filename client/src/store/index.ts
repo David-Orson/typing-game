@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 
 let store = {
   state: {
-    apiUrl: "http://localhost:8085",
+    apiUrl: "http://localhost:8086",
     authToken: localStorage.getItem("authToken"),
     account: localStorage.getItem("account"),
   },

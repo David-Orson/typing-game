@@ -133,7 +133,7 @@ onMounted(() => {
   <div class="container mx-auto">
     <div>{{ timeLeft }} {{ wpm }} {{ accuracy }} PR: {{ sessionPr }}</div>
 
-    <div class="mx-16 text-4xl text-gray-700">{{ test }}</div>
+    <div class="mx-16 text-4xl">{{ test }}</div>
 
     <div class="m-16 text-4xl flex justify-center flex-wrap">
       <div class="flex" v-for="(word, i) in typed.split(' ')">
@@ -144,7 +144,7 @@ onMounted(() => {
               test.split(' ')[i] &&
               test.split(' ')[i][j] &&
               test.split(' ')[i][j] == typed.split(' ')[i][j]
-                ? 'text-gray-700'
+                ? 'text-white-700'
                 : 'text-red-500'
             "
             >{{ c }}</span
