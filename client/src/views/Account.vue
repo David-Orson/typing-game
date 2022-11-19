@@ -2,6 +2,10 @@
 // npm
 import { onMounted, ref } from "vue";
 
+// primevue
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+
 // hooks
 import { useStore } from "@/store";
 import { useServices } from "@/data/services";
@@ -22,5 +26,10 @@ onMounted(async () => {
 
 <template>
   <div class="container mx-auto">{{ store.getters.account.username }}</div>
-  <div>{{ tests }}</div>
+  <div class="container mx-auto">
+    <DataTable :value="tests" responsiveLayout="scroll">
+      <Column field="wpm" header="WPM"></Column>
+      <Column field="accuracy" header="Accuracy"></Column>
+    </DataTable>
+  </div>
 </template>

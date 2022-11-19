@@ -24,7 +24,7 @@ const store = useStore();
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #fff;
-  background-color: #313131;
+  background-color: #161616;
   min-height: 100vh;
 }
 
