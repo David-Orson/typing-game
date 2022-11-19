@@ -7,6 +7,8 @@ pub struct Test {
     pub account_id: i32,
     pub test: String,
     pub typed: String,
+    pub accuracy: f32,
+    pub wpm: i32,
 }
 
 #[derive(Deserialize)]

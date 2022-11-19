@@ -27,6 +27,8 @@ const MIGRATIONS: [&str; 3] = [
         account_id int NOT NULL,
         test varchar(250) NOT NULL DEFAULT '',
         typed char(250) NOT NULL,
+        wpm int NOT NULL,
+        accuracy float NOT NULL,
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         modify_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (id),

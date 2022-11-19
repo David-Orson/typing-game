@@ -30,5 +30,5 @@ async fn main() -> std::io::Result<()> {
             )
     };
 
-    HttpServer::new(app).bind(("127.0.0.1", 8085))?.run().await
+    HttpServer::new(app).bind(("127.0.0.1", 8086))?.run().await
 }

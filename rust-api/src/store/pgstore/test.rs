@@ -32,16 +32,22 @@ pub async fn create(
         "INSERT INTO test (
             account_id, 
             test, 
-            typed
+            typed,
+            wpm,
+            accuracy
         ) VALUES (
             $1,
             $2,
-            $3
+            $3,
+            $4,
+            $5
         )",
     )
     .bind(test.account_id)
     .bind(test.test)
     .bind(test.typed)
+    .bind(test.wpm)
+    .bind(test.accuracy)
     .execute(&state.db)
     .await
     {
