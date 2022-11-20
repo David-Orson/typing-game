@@ -7,6 +7,7 @@ const MIGRATIONS: [&str; 3] = [
         username varchar(30) NOT NULL DEFAULT '',
         email varchar(50) NOT NULL,
         password varchar(64) NOT NULL,
+        pr int NOT NULL,
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         modify_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (id)

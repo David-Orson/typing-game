@@ -22,6 +22,7 @@ pub async fn log_in(
         username: body.username.to_string(),
         email: body.email.to_string(),
         password: body.email.to_string(),
+        pr: 0,
     };
 
     match pgstore::auth::log_in(account, &state).await {
@@ -41,6 +42,7 @@ pub async fn sign_up(
         username: body.username.to_string(),
         email: body.email.to_string(),
         password: body.email.to_string(),
+        pr: 0,
     };
 
     match pgstore::account::create(account, &state).await {

@@ -21,7 +21,7 @@ const spaceErrors = ref(0);
 const sessionPr = ref(0);
 
 const wordlist =
-  "anything then the best world will defeat any bother and I have any great interest ground govern anytime major sensitive west time gripe nose big elephant has always been able to upset the small one";
+  "of off and a to two too in is you that it he for four was on are as with his they at be bee this from I eye have or ore by bye buy one won had not knot but what all were where when we there their they’re can an your you’re which witch said if do due will each about how who up out them then than she many some sum so sew these would wood other into has more her like him see sea time could no know make first been its it’s now people my made maid over did down done only way weigh find fined use used may water long little very after words called just most get through back much before go good new knew write right our hour me man men woman women any day same look think also around another came come work three word must because does part even place well such here hear take why things help put years different away again went old number great tell say small every found still between name should Mr Mrs Ms Miss home big give air line set own under read red last never us left end along while might next sound below saw something thought both few those always looked show large often together asked house don’t world going want";
 
 const underscores = "____________________________";
 
@@ -121,7 +121,8 @@ const newTest = () => {
   // reset test values
   timeLeft.value = 15;
   accuracy.value = 100;
-  98.9011;
+  test.value = "";
+  typed.value = "";
 };
 
 // lifecycle

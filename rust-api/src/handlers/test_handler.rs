@@ -6,7 +6,10 @@ use actix_web::{
 
 use crate::{
     store::{
-        models::test::{Test, TestBody},
+        models::{
+            auth::Account,
+            test::{Test, TestBody},
+        },
         pgstore,
     },
     AppState,
@@ -46,7 +49,9 @@ pub async fn finish(
 
     for (i, word) in typed_split.iter().enumerate() {
         for (j, c) in word.chars().enumerate() {
-            if c != test_split[i].chars().nth(j).unwrap() {
+            if test_split[i].chars().count() > j
+                && c != test_split[i].chars().nth(j).unwrap()
+            {
                 errors += 1;
             }
         }
@@ -72,6 +77,30 @@ pub async fn finish(
         wpm,
         accuracy,
     };
+
+    let mut account: Account;
+
+    // get acount
+    match pgstore::account::get(body.account, &state).await {
+        Ok(acc) => account = acc,
+        Err(err) => {
+            return HttpResponse::InternalServerError()
+                .json(String::from(err.to_string()))
+        }
+    };
+
+    // if test is faster than pr set pr
+
+    if wpm > account.pr && accuracy == 100.0 {
+        account.pr = wpm;
+        match pgstore::account::update_pr(account, &state).await {
+            Err(err) => {
+                return HttpResponse::InternalServerError()
+                    .json(String::from(err.to_string()))
+            }
+            _ => (),
+        }
+    }
 
     match pgstore::test::create(test, &state).await {
         Ok(_) => HttpResponse::Ok().body("created test"),
