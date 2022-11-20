@@ -4,7 +4,15 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 // services
 import { useServices } from "@/data/services";
+
+// hooks
+import { useStore } from "@/store";
+import { useLocalState } from "@/hooks/localStateHook";
+
 const { finishTest } = useServices();
+const { addState } = useLocalState();
+
+const store = useStore();
 
 // reactive
 const isTestActive = ref(false);
@@ -18,15 +26,13 @@ const accuracy = ref(100);
 const errors = ref(0);
 const spaceErrors = ref(0);
 
-const sessionPr = ref(0);
-
 const wordlist =
-  "of off and a to two too in is you that it he for four was on are as with his they at be bee this from I eye have or ore by bye buy one won had not knot but what all were where when we there their they’re can an your you’re which witch said if do due will each about how who up out them then than she many some sum so sew these would wood other into has more her like him see sea time could no know make first been its it’s now people my made maid over did down done only way weigh find fined use used may water long little very after words called just most get through back much before go good new knew write right our hour me man men woman women any day same look think also around another came come work three word must because does part even place well such here hear take why things help put years different away again went old number great tell say small every found still between name should Mr Mrs Ms Miss home big give air line set own under read red last never us left end along while might next sound below saw something thought both few those always looked show large often together asked house don’t world going want";
+  "of off and a to two too in is you that it he for four was on are as with his they at be bee this from I eye have or ore by bye buy one won had not knot but what all were where when we there their they're can an your you're which witch said if do due will each about how who up out them then than she many some sum so sew these would wood other into has more her like him see sea time could no know make first been its it’s now people my made maid over did down done only way weigh find fined use used may water long little very after words called just most get through back much before go good new knew write right our hour me man men woman women any day same look think also around another came come work three word must because does part even place well such here hear take why things help put years different away again went old number great tell say small every found still between name should Mr Mrs Ms Miss home big give air line set own under read red last never us left end along while might next sound below saw something thought both few those always looked show large often together asked house don't world going want";
 
 const underscores = "____________________________";
 
 // watchers
-const keyListener = (e) => {
+const keyListener = (e: any) => {
   if (e.key === "Enter") {
     newTest();
     populateTestString();
@@ -65,8 +71,13 @@ const reset = () => {
 
       clearInterval(intervalId.value);
 
-      if (accuracy.value === 100 && wpm.value > sessionPr.value)
-        sessionPr.value = wpm.value;
+      if (
+        (store.state.sessionPr &&
+          wpm.value > store.state.sessionPr &&
+          accuracy.value === 100) ||
+        (!store.state.sessionPr && accuracy.value === 100)
+      )
+        addState("sessionPr", wpm.value);
 
       finishTest(test.value, typed.value);
     }
@@ -139,11 +150,17 @@ onUnmounted(() => {
 
 <template>
   <div class="container mx-auto">
-    <div>{{ timeLeft }} {{ wpm }} {{ accuracy }} PR: {{ sessionPr }}</div>
+    <div class="mb-4">
+      Time: {{ timeLeft }} | WPM: {{ wpm }} | Accuracy: {{ accuracy }} | Session
+      PR: {{ store.state.sessionPr || 0 }} | PR:
+      {{ store.getters.account.pr }}
+    </div>
 
-    <div class="mx-16 text-4xl">{{ test }}</div>
+    <div class="green-text">Test Text:</div>
+    <div class="mx-16 text-4xl mb-4">{{ test }}</div>
 
-    <div class="m-16 text-4xl flex justify-center flex-wrap">
+    <div class="green-text">Typed Text:</div>
+    <div class="mx-16 text-4xl flex justify-center flex-wrap">
       <div class="flex" v-for="(word, i) in typed.split(' ')">
         <div v-for="(c, j) in word.split('')">
           <span

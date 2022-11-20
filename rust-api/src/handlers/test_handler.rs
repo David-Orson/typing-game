@@ -38,6 +38,10 @@ pub async fn finish(
     let typed = body.typed.to_string();
     let test = body.test.to_string();
 
+    if typed.chars().count() == 0 {
+        return HttpResponse::Ok().body("created test");
+    }
+
     let wpm: i32 = typed.chars().count() as i32 * 12 / 15;
     let mut accuracy: f32 = 100.0;
 
@@ -90,7 +94,6 @@ pub async fn finish(
     };
 
     // if test is faster than pr set pr
-
     if wpm > account.pr && accuracy == 100.0 {
         account.pr = wpm;
         match pgstore::account::update_pr(account, &state).await {

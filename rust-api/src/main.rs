@@ -28,6 +28,10 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::scope("/auth").configure(handlers::auth_routes),
             )
+            .service(
+                web::scope("/account")
+                    .configure(handlers::account_routes),
+            )
     };
 
     HttpServer::new(app).bind(("127.0.0.1", 8086))?.run().await

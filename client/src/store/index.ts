@@ -5,6 +5,7 @@ let store = {
     apiUrl: "http://localhost:8086",
     authToken: localStorage.getItem("authToken"),
     account: localStorage.getItem("account"),
+    sessionPr: localStorage.getItem("sessionPr"),
   },
   getters: {
     account: (state: any) => {

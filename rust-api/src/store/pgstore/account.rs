@@ -15,7 +15,7 @@ pub async fn get(
     .fetch_one(&state.db)
     .await
     {
-        Ok(data) => Ok(data),
+        Ok(acc) => Ok(acc),
         Err(e) => {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidInput,

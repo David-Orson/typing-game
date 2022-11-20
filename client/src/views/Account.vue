@@ -11,21 +11,26 @@ import { useStore } from "@/store";
 import { useServices } from "@/data/services";
 
 // models
-import { Test } from "@/data/models";
+import { Test, Account } from "@/data/models";
 
 const store = useStore();
-const { getTests } = useServices();
+const { getTests, getAccount } = useServices();
 
 // reactive
 const tests = ref<Test[]>([]);
+const account = ref<Account>();
 
 onMounted(async () => {
   tests.value = await getTests(store.getters.account.id);
+  account.value = await getAccount(store.getters.account.id);
 });
 </script>
 
 <template>
-  <div class="container mx-auto">{{ store.getters.account.username }}</div>
+  <div class="container mx-auto mb-4 flex justify-evenly">
+    <div class="text-4xl">{{ account?.username }}</div>
+    <div class="text-4xl">Personal Record: {{ account?.pr }}</div>
+  </div>
   <div class="container mx-auto">
     <DataTable :value="tests" responsiveLayout="scroll">
       <Column field="wpm" header="WPM"></Column>
