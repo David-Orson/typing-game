@@ -6,7 +6,7 @@ use actix_web::{
 
 use crate::{
     store::{
-        models::auth::{Account, AccountBody},
+        models::auth::{Account, AccountBody, LoginBody},
         pgstore,
     },
     AppState,
@@ -15,11 +15,11 @@ use crate::{
 #[post("login")]
 pub async fn log_in(
     state: Data<AppState>,
-    body: Json<AccountBody>,
+    body: Json<LoginBody>,
 ) -> impl Responder {
     let account = Account {
         id: 0,
-        username: body.username.to_string(),
+        username: String::from(""),
         email: body.email.to_string(),
         password: body.email.to_string(),
         pr: 0,

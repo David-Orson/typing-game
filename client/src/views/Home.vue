@@ -153,7 +153,7 @@ onUnmounted(() => {
     <div class="mb-4">
       Time: {{ timeLeft }} | WPM: {{ wpm }} | Accuracy: {{ accuracy }} | Session
       PR: {{ store.state.sessionPr || 0 }} | PR:
-      {{ store.getters.account.pr }}
+      {{ store.getters.account?.pr || "Login to save Personal Record" }}
     </div>
 
     <div class="green-text">Test Text:</div>

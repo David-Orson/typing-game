@@ -19,7 +19,7 @@ export const useAccountService = () => {
   const getAccount = async (id: number): Promise<Account> => {
     const res = await axios.get(`${apiUrl}/account/${id}`);
 
-    if (store.getters.account.id === res.data.id) {
+    if (store.getters.account && store.getters.account.id === res.data.id) {
       addState("account", res.data);
     }
 

@@ -17,6 +17,12 @@ pub struct AccountBody {
     pub password: String,
 }
 
+#[derive(Deserialize)]
+pub struct LoginBody {
+    pub email: String,
+    pub password: String,
+}
+
 #[derive(Serialize)]
 pub struct Token {
     pub hash: String,
