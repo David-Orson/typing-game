@@ -41,7 +41,6 @@ case $opt in
         $footer
         "
         ;;
-		;;
     2)
         git commit -m ":repeat: $subj
         
