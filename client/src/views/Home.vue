@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // npm
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 // services
 import { useServices } from "@/data/services";
@@ -26,28 +26,30 @@ const wordlist =
 const underscores = "____________________________";
 
 // watchers
-window.addEventListener("keydown", (e) => {
-  if (!isTestActive.value && timeLeft.value === 15) reset();
-
-  let allKeys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  allKeys.split("").forEach((c) => {
-    if (e.key === c) typed.value += c;
-  });
-
-  if (e.key === " ") typed.value += " ";
-
-  if (e.key === "Backspace") typed.value = typed.value.slice(0, -1);
-
+const keyListener = (e) => {
   if (e.key === "Enter") {
     newTest();
     populateTestString();
+  } else if (!typed.value.length && !isTestActive.value) reset();
+
+  if (isTestActive.value) {
+    let allKeys =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[];'#/.,!£$%^&*()_+=-{}@:~?><";
+
+    allKeys.split("").forEach((c) => {
+      if (e.key === c) typed.value += c;
+    });
+
+    if (e.key === " ") typed.value += " ";
+
+    if (e.key === "Backspace") typed.value = typed.value.slice(0, -1);
   }
-});
+};
 
 // methods
 const reset = () => {
   isTestActive.value = true;
+  clearInterval(intervalId.value);
 
   intervalId.value = setInterval(() => {
     timeLeft.value -= 1;
@@ -119,13 +121,18 @@ const newTest = () => {
   // reset test values
   timeLeft.value = 15;
   accuracy.value = 100;
-  test.value = "";
-  typed.value = "";
+  98.9011;
 };
 
 // lifecycle
 onMounted(() => {
   populateTestString();
+  window.addEventListener("keydown", keyListener);
+});
+
+onUnmounted(() => {
+  clearInterval(intervalId.value);
+  window.removeEventListener("keydown", keyListener);
 });
 </script>
 
