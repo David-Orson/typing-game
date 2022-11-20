@@ -34,7 +34,13 @@ case $opt in
         "
         ;;
 	1)
-		echo "Bug"
+		git commit -m ":hammer: $subj
+        
+        $body
+
+        $footer
+        "
+        ;;
 		;;
     2)
         git commit -m ":repeat: $subj
@@ -45,7 +51,52 @@ case $opt in
         "
         ;;
     3)
-        echo "Perform"
+        git commit -m ":zap: $subj
+        
+        $body
+
+        $footer
+        "
+        ;;
+    4)
+        git commit -m ":scroll: $subj
+        
+        $body
+
+        $footer
+        "
+        ;;
+    5)
+        git commit -m ":toolbox: $subj
+        
+        $body
+
+        $footer
+        "
+        ;;
+    6)
+        git commit -m ":lock: $subj
+        
+        $body
+
+        $footer
+        "
+        ;;
+    7)
+        git commit -m ":gear: $subj
+        
+        $body
+
+        $footer
+        "
+        ;;
+    8)
+        git commit -m ":x: $subj
+        
+        $body
+
+        $footer
+        "
         ;;
 	*)
 		echo "Please choose a valid option"
