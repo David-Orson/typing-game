@@ -101,5 +101,3 @@ case $opt in
 		echo "Please choose a valid option"
 		;;
 esac
-
-#4
