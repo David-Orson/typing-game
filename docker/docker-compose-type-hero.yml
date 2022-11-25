@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+    type-hero-vue:
+        image: 'orsondc/type-hero-vue'
+        container_name: 'type-hero-vue'
+        restart: always
+        expose:
+            - 80
+        environment:
+            VIRTUAL_HOST: typehero.pro
+            LETSENCRYPT_HOST: typehero.pro
+
+    type-hero-api:
+        image: 'orsondc/type-hero-api'
+        container_name: 'type-hero-api'
+        restart: always
+        expose:
+            - '8086:8086/tcp'
+        depends_on:
+            - 'type-hero-postgres'
+        environment:
+            VIRTUAL_PORT: 8086
+            DATABASE_URL: postgresql://postgres:OrsonDC@type-hero-postgres/typing-game
+            VIRTUAL_HOST: api.typehero.pro
+            LETSENCRYPT_HOST: api.typehero.pro
+
+    type-hero-postgres:
+        image: 'orsondc/typehero-postgis'
+        shm_size: 1g
+        container_name: 'type-hero-postgres'
+        restart: always
+        expose: [ '5432' ]
+        volumes:
+            - type_hero_postgis_data:/var/lib/postgresql
+
+networks:
+    default:
+        external:
+            name: nginx-proxy
+
+volumes:
+    type_hero_postgis_data:

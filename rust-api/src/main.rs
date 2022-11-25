@@ -4,12 +4,19 @@ use actix_web::{web, web::Data, App};
 use dotenv::dotenv;
 use sqlx::{Pool, Postgres};
 
+use actix_web::{get, HttpResponse, Result};
+
 mod handlers;
 mod store;
 use store::pgstore;
 
 pub struct AppState {
     db: Pool<Postgres>,
+}
+
+#[get("/health")]
+pub async fn health() -> Result<HttpResponse> {
+    Ok(HttpResponse::Ok().body("success".to_string()))
 }
 
 #[actix_web::main]
@@ -32,7 +39,10 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/account")
                     .configure(handlers::account_routes),
             )
+            .service(health)
     };
 
-    HttpServer::new(app).bind(("127.0.0.1", 8086))?.run().await
+    println!("listening on :8086");
+
+    HttpServer::new(app).bind(("0.0.0.0", 8086))?.run().await
 }
