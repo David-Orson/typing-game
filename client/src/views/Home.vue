@@ -9,7 +9,7 @@ import { useServices } from "@/data/services";
 import { useStore } from "@/store";
 import { useLocalState } from "@/hooks/localStateHook";
 
-const { finishTest } = useServices();
+const { finishTest, onTestEnd, onTestStart } = useServices();
 const { addState } = useLocalState();
 
 const store = useStore();
@@ -55,6 +55,9 @@ const keyListener = (e: any) => {
 // methods
 const reset = () => {
   isTestActive.value = true;
+  if (store.state.environment === "production") {
+    onTestStart();
+  }
   clearInterval(intervalId.value);
 
   intervalId.value = setInterval(() => {
@@ -68,6 +71,10 @@ const reset = () => {
     // endgame
     if (timeLeft.value === 0) {
       isTestActive.value = false;
+
+      if (store.state.environment === "production") {
+        onTestEnd();
+      }
 
       clearInterval(intervalId.value);
 

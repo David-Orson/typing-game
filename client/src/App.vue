@@ -1,6 +1,29 @@
 <script setup lang="ts">
+// npm
+import { onMounted } from "vue";
+
+// hooks
 import { useStore } from "@/store";
+import { useServices } from "@/data/services";
+const { onVisit } = useServices();
 const store = useStore();
+
+const genRanHex = () =>
+  [...Array(100)]
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join("");
+
+onMounted(async () => {
+  if (!store.state.sessionToken) {
+    const token = genRanHex();
+    store.state.sessionToken = token;
+    localStorage.setItem("sessionToken", token);
+  }
+
+  if (store.state.environment === "production") {
+    await onVisit();
+  }
+});
 </script>
 
 <template>
