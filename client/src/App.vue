@@ -42,13 +42,18 @@ onMounted(async () => {
 @import "./index.css";
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #fff;
-  background-color: #161616;
+  color: #4b5975;
+  background-color: #1b2028;
   min-height: 100vh;
+}
+
+.typed {
+  color: #ccccb5;
 }
 
 nav {

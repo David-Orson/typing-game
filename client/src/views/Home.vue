@@ -26,8 +26,10 @@ const accuracy = ref(100);
 const errors = ref(0);
 const spaceErrors = ref(0);
 
-const wordlist =
+const wordlist2 =
   "of off and a to two too in is you that it he for four was on are as with his they at be bee this from I eye have or ore by bye buy one won had not knot but what all were where when we there their they're can an your you're which witch said if do due will each about how who up out them then than she many some sum so sew these would wood other into has more her like him see sea time could no know make first been its it’s now people my made maid over did down done only way weigh find fined use used may water long little very after words called just most get through back much before go good new knew write right our hour me man men woman women any day same look think also around another came come work three word must because does part even place well such here hear take why things help put years different away again went old number great tell say small every found still between name should Mr Mrs Ms Miss home big give air line set own under read red last never us left end along while might next sound below saw something thought both few those always looked show large often together asked house don't world going want";
+
+const wordlist = "north found why process follow";
 
 const underscores = "____________________________";
 
@@ -156,46 +158,49 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto h-[500px]">
     <div class="mb-4">
-      Time: {{ timeLeft }} | WPM: {{ wpm }} | Accuracy: {{ accuracy }} | Session
-      PR: {{ store.state.sessionPr || 0 }} | PR:
+      | Session PR: {{ store.state.sessionPr || 0 }} | PR:
       {{ store.getters.account?.pr || "Login to save Personal Record" }}
     </div>
+    <div class="flex flex-wrap flex-col justify-center items-center h-full">
+      <div class="text-4xl mb-4 typed">
+        Time: {{ timeLeft }} | WPM: {{ wpm }} | Accuracy: {{ accuracy }}
+      </div>
+      <div class="green-text mb-4">Test Text:</div>
+      <div class="mx-16 text-4xl mb-12 h-32">{{ test }}</div>
 
-    <div class="green-text">Test Text:</div>
-    <div class="mx-16 text-4xl mb-4">{{ test }}</div>
-
-    <div class="green-text">Typed Text:</div>
-    <div class="mx-16 text-4xl flex justify-center flex-wrap">
-      <div class="flex" v-for="(word, i) in typed.split(' ')">
-        <div v-for="(c, j) in word.split('')">
-          <span
-            class="w-1"
-            :class="
-              test.split(' ')[i] &&
-              test.split(' ')[i][j] &&
-              test.split(' ')[i][j] == typed.split(' ')[i][j]
-                ? 'text-white-700'
-                : 'text-red-500'
+      <div class="green-text mb-4">Typed Text:</div>
+      <div class="mx-16 text-4xl flex justify-center flex-wrap h-24">
+        <div class="flex" v-for="(word, i) in typed.split(' ')">
+          <div v-for="(c, j) in word.split('')">
+            <span
+              class="w-1"
+              :class="
+                test.split(' ')[i] &&
+                test.split(' ')[i][j] &&
+                test.split(' ')[i][j] == typed.split(' ')[i][j]
+                  ? 'typed'
+                  : 'text-red-500'
+              "
+              >{{ c }}</span
+            >
+          </div>
+          <div
+            v-if="
+              typed.split(' ').length > i + 1 &&
+              word.length !== test.split(' ')[i].length
             "
-            >{{ c }}</span
+            class="text-red-500"
           >
+            {{
+              test.split(" ")[i].length - word.length > 0
+                ? underscores.slice(0, test.split(" ")[i].length - word.length)
+                : ""
+            }}
+          </div>
+          <div class="w-2"></div>
         </div>
-        <div
-          v-if="
-            typed.split(' ').length > i + 1 &&
-            word.length !== test.split(' ')[i].length
-          "
-          class="text-red-500"
-        >
-          {{
-            test.split(" ")[i].length - word.length > 0
-              ? underscores.slice(0, test.split(" ")[i].length - word.length)
-              : ""
-          }}
-        </div>
-        <div class="w-2"></div>
       </div>
     </div>
   </div>

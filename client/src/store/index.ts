@@ -4,7 +4,7 @@ const environment = "production"
 
 let store = {
     state: {
-        apiUrl: "http://localhost:8086",
+        apiUrl: "https://api.typehero.pro",
         metricUrl: "https://api.orsonhub.com",
         authToken: localStorage.getItem("authToken"),
         account: localStorage.getItem("account"),
